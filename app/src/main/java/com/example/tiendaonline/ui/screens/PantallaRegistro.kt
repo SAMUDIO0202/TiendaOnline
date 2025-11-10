@@ -81,7 +81,7 @@ fun PantallaRegistro(navController: NavHostController, clienteViewModel: Cliente
                     text = "Inicia Sesión",
                     color = Color(0xFF6A11CB),
                     fontWeight = FontWeight.Bold,
-                    modifier = Modifier.clickable { navController.navigate("login") }
+                    modifier = Modifier.clickable { navController.navigate("login/$correo") }
                 )
             }
         }

@@ -28,7 +28,7 @@ fun PantallaCarrito(navController: NavHostController, carritoViewModel: CarritoV
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Mi Carrito 🛒", color = Color.White, fontWeight = FontWeight.Bold) },
+                title = { Text("Mi Carrito", color = Color.White, fontWeight = FontWeight.Bold) },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(Icons.Default.ArrowBack, contentDescription = "Atrás", tint = Color.White)

@@ -94,6 +94,19 @@ fun PantallaBienvenida(navController: NavHostController) {
                     modifier = Modifier.clickable { navController.navigate("registro") }
                 )
             }
+
+            Divider(modifier = Modifier.padding(vertical = 16.dp))
+
+            Button(
+                onClick = { },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp),
+                shape = RoundedCornerShape(12.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = Color.White)
+            ) {
+                Text("Iniciar sesión con Google", color = Color.Black)
+            }
         }
     }
 }
