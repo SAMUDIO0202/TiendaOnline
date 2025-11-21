@@ -11,7 +11,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.tiendaonline.viewmodel.ClienteViewModel
 
@@ -21,6 +20,10 @@ fun PantallaPerfil(
     clienteViewModel: ClienteViewModel
 ) {
     val cliente = clienteViewModel.clienteActual.collectAsState().value
+
+    var editando by remember { mutableStateOf(false) }
+    var nombre by remember { mutableStateOf(cliente?.nombre ?: "") }
+    var correo by remember { mutableStateOf(cliente?.correo ?: "") }
 
     Box(
         modifier = Modifier
@@ -33,7 +36,8 @@ fun PantallaPerfil(
             verticalArrangement = Arrangement.Top,
             modifier = Modifier.fillMaxWidth()
         ) {
-            EncabezadoConLogo("Mi Perfil", "Bienvenido de nuevo a PetZone 🐾")
+            EncabezadoConLogo("Mi Perfil", "Gestiona tu cuenta 🐾")
+
             Spacer(Modifier.height(40.dp))
 
             Card(
@@ -44,18 +48,60 @@ fun PantallaPerfil(
             ) {
                 Column(
                     modifier = Modifier.padding(20.dp),
-                    verticalArrangement = Arrangement.spacedBy(10.dp)
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    if (cliente != null) {
-                        Text("Nombre: ${cliente.nombre}", fontSize = 18.sp, color = Color(0xFF1C1C1E))
-                        Text("Correo: ${cliente.correo}", fontSize = 18.sp, color = Color(0xFF1C1C1E))
-                        Text("Miembro desde: Noviembre 2025", fontSize = 16.sp, color = Color.Gray)
+                    if (!editando) {
+                        Text("Nombre: ${cliente?.nombre ?: ""}", fontSize = 18.sp)
+                        Text("Correo: ${cliente?.correo ?: ""}", fontSize = 18.sp)
+
+                        Spacer(Modifier.height(16.dp))
+
+                        Button(
+                            onClick = { editando = true },
+                            modifier = Modifier.fillMaxWidth(),
+                            shape = RoundedCornerShape(12.dp),
+                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF6A11CB))
+                        ) {
+                            Text("Editar Datos", color = Color.White, fontWeight = FontWeight.Bold)
+                        }
                     } else {
-                        Text(
-                            "No hay usuario activo. Inicia sesión nuevamente.",
-                            fontSize = 16.sp,
-                            color = Color.Gray
+                        OutlinedTextField(
+                            value = nombre,
+                            onValueChange = { nombre = it },
+                            label = { Text("Nombre") },
+                            modifier = Modifier.fillMaxWidth()
                         )
+
+                        OutlinedTextField(
+                            value = correo,
+                            onValueChange = { correo = it },
+                            label = { Text("Correo") },
+                            modifier = Modifier.fillMaxWidth()
+                        )
+
+                        Spacer(Modifier.height(16.dp))
+
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Button(
+                                onClick = { editando = false },
+                                colors = ButtonDefaults.buttonColors(containerColor = Color.Gray)
+                            ) {
+                                Text("Cancelar", color = Color.White)
+                            }
+
+                            Button(
+                                onClick = {
+                                    clienteViewModel.actualizarCliente(nombre, correo)
+                                    editando = false
+                                },
+                                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF6A11CB))
+                            ) {
+                                Text("Guardar", color = Color.White)
+                            }
+                        }
                     }
                 }
             }
@@ -63,14 +109,14 @@ fun PantallaPerfil(
             Spacer(Modifier.height(50.dp))
 
             Button(
-                onClick = { navController.navigate("productos") },
+                onClick = { navController.navigate("home") },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(55.dp),
                 shape = RoundedCornerShape(12.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF6A11CB))
             ) {
-                Text("Ver Productos", color = Color.White, fontWeight = FontWeight.Bold)
+                Text("Ver productos", color = Color.White, fontWeight = FontWeight.Bold)
             }
 
             Spacer(Modifier.height(16.dp))

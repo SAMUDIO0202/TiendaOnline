@@ -69,7 +69,9 @@ fun PantallaLogin(navController: NavHostController, clienteViewModel: ClienteVie
                 onClick = {
                     scope.launch {
                         clienteViewModel.login(correo, contrasena) {
-                            navController.navigate("perfil")
+                            navController.navigate("home") {
+                                popUpTo("login") { inclusive = true }
+                            }
                         }
                     }
                 },

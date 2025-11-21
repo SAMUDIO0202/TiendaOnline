@@ -17,6 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import coil.compose.AsyncImage
 import com.example.tiendaonline.viewmodel.CarritoViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -70,6 +71,13 @@ fun PantallaCarrito(navController: NavHostController, carritoViewModel: CarritoV
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Column {
+                                    producto.imagen?.let {
+                                        AsyncImage(
+                                            model = it,
+                                            contentDescription = "Imagen",
+                                            modifier = Modifier.fillMaxWidth().height(150.dp)
+                                        )
+                                    }
                                     Text(producto.nombre, fontWeight = FontWeight.Bold, fontSize = 18.sp)
                                     Text("$${producto.precio}", fontSize = 16.sp, color = Color(0xFF6A11CB))
                                 }

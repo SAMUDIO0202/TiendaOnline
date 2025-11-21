@@ -28,6 +28,19 @@ class ClienteViewModel(private val clienteDao: ClienteDao) : ViewModel() {
         }
     }
 
+    fun actualizarCliente(nombre: String, correo: String) {
+        viewModelScope.launch {
+            clienteActual.value?.let { actual ->
+                val actualizado = actual.copy(
+                    nombre = nombre,
+                    correo = correo
+                )
+                clienteDao.actualizarCliente(actualizado)
+                _clienteActual.value = actualizado
+            }
+        }
+    }
+
     fun login(correo: String, contraseña: String, onSuccess: () -> Unit) {
         viewModelScope.launch {
             val cliente = clienteDao.login(correo, contraseña)

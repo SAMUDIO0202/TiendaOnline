@@ -26,7 +26,9 @@ class MainActivity : ComponentActivity() {
             applicationContext,
             AppDatabase::class.java,
             "petzone_db"
-        ).build()
+        )
+            .fallbackToDestructiveMigration()
+            .build()
 
         val productoViewModel: ProductoViewModel by viewModels {
             object : ViewModelProvider.Factory {
@@ -76,6 +78,7 @@ class MainActivity : ComponentActivity() {
                 val correo = backStackEntry.arguments?.getString("correo") ?: ""
                 PantallaLogin(navController, clienteViewModel, correo)
             }
+            composable ("home"){ PantallaHome(navController, productoViewModel, carritoViewModel) }
             composable("registro") { PantallaRegistro(navController, clienteViewModel) }
             composable("perfil") { PantallaPerfil(navController, clienteViewModel) }
             composable("productos") {
